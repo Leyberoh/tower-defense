@@ -25,6 +25,9 @@ body {
     position: relative;
     border-radius: 10px;
     border: 5px rgb(70, 61, 98) solid;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 h1 {
@@ -32,6 +35,17 @@ h1 {
 }
 
 #marine {
-    background-color: rgb(255, 0, 166);
+    
+    background-image: url('/images/Archer.gif');
+    background-size: cover;
     position: absolute;
+}
+
+#game-zone {
+    /*background-color: aliceblue;*/
+    width: 662px;
+    height: 441px;
+    top:182px;
+    left:198px;
+    position:absolute
 }
