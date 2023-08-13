@@ -34,15 +34,26 @@ h1 {
     font-family: 'CaslonAntique';
 }
 
-#marine {
+#archer {
     
     background-image: url('/images/Archer.gif');
     background-size: cover;
     position: absolute;
 }
 
+#enemy {
+    background-image: url('/images/Enemy-Run.gif');
+    background-size: cover;
+    position: absolute;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
 #game-zone {
-    /*background-color: aliceblue;*/
     width: 662px;
     height: 441px;
     top:182px;

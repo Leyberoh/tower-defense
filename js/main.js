@@ -1,6 +1,6 @@
 class Game {
   constructor() {
-    this.marineArr = [];
+    this.archerArr = [];
     this.boardWidth = 0;
     this.boardHeigth = 0;
     this.gameZoneWidth = 662;
@@ -8,9 +8,9 @@ class Game {
   }
 
   start() {
-    this.getMarinePosition();
+    this.getArcherPosition();
   }
-  getMarinePosition() {
+  getArcherPosition() {
     const clickZone = document.getElementById("game-zone");
 
     clickZone.addEventListener("click", function (click) {
@@ -26,10 +26,10 @@ class Game {
 
       const cellName = columnName + rowNumber;
 
-      const newMarine = new Marine(clickPositionX, clickPositionY, cellName);
-      game.marineArr.push(newMarine);
+      const newArcher = new Archer(clickPositionX, clickPositionY, cellName);
+      game.archerArr.push(newArcher);
 
-      console.log(game.marineArr);
+      console.log(game.archerArr);
       console.log("Position X : ", clickPositionX);
       console.log("Position Y : ", clickPositionY);
       console.log("Cell : ", cellName);
@@ -37,209 +37,74 @@ class Game {
   }
 }
 
-class Marine {
+class Archer {
   constructor(clickPositionX, clickPositionY, cellName) {
-    this.width = 50;
-    this.height = 50;
+    this.width = 70;
+    this.height = 73;
     this.domElement = null;
-    this.defineMarinePosition(cellName);
-    this.callSpaceMarine();
+    this.defineArcherPosition(cellName);
+    this.callArcher();
   }
-  defineMarinePosition(cellName) {
-    switch (cellName) {
-      case "A1":
-        this.positionX = 9;
-        this.positionY = 18;
-        break;
-      case "A2":
-        this.positionX = 9;
-        this.positionY = 106;
-        break;
-      case "A3":
-        this.positionX = 9;
-        this.positionY = 194;
-        break;
-      case "A4":
-        this.positionX = 9;
-        this.positionY = 282;
-        break;
-      case "A5":
-        this.positionX = 9;
-        this.positionY = 370;
-        break;
-      case "B1":
-        this.positionX = 83;
-        this.positionY = 18;
-        break;
-      case "B2":
-        this.positionX = 83;
-        this.positionY = 106;
-        break;
-      case "B3":
-        this.positionX = 83;
-        this.positionY = 194;
-        break;
-      case "B4":
-        this.positionX = 83;
-        this.positionY = 282;
-        break;
-      case "B5":
-        this.positionX = 83;
-        this.positionY = 370;
-        break;
-      case "C1":
-        this.positionX = 157;
-        this.positionY = 18;
-        break;
-      case "C2":
-        this.positionX = 157;
-        this.positionY = 106;
-        break;
-      case "C3":
-        this.positionX = 157;
-        this.positionY = 194;
-        break;
-      case "C4":
-        this.positionX = 157;
-        this.positionY = 282;
-        break;
-      case "C5":
-        this.positionX = 157;
-        this.positionY = 370;
-        break;
-      case "D1":
-        this.positionX = 231;
-        this.positionY = 18;
-        break;
-      case "D2":
-        this.positionX = 231;
-        this.positionY = 106;
-        break;
-      case "D3":
-        this.positionX = 231;
-        this.positionY = 194;
-        break;
-      case "D4":
-        this.positionX = 231;
-        this.positionY = 282;
-        break;
-      case "D5":
-        this.positionX = 231;
-        this.positionY = 370;
-        break;
-      case "E1":
-        this.positionX = 305;
-        this.positionY = 18;
-        break;
-      case "E2":
-        this.positionX = 305;
-        this.positionY = 106;
-        break;
-      case "E3":
-        this.positionX = 305;
-        this.positionY = 194;
-        break;
-      case "E4":
-        this.positionX = 305;
-        this.positionY = 282;
-        break;
-      case "E5":
-        this.positionX = 305;
-        this.positionY = 370;
-        break;
-      case "F1":
-        this.positionX = 379;
-        this.positionY = 18;
-        break;
-      case "F2":
-        this.positionX = 379;
-        this.positionY = 106;
-        break;
-      case "F3":
-        this.positionX = 379;
-        this.positionY = 194;
-        break;
-      case "F4":
-        this.positionX = 379;
-        this.positionY = 282;
-        break;
-      case "F5":
-        this.positionX = 379;
-        this.positionY = 370;
-        break;
-      case "G1":
-        this.positionX = 453;
-        this.positionY = 18;
-        break;
-      case "G2":
-        this.positionX = 453;
-        this.positionY = 106;
-        break;
-      case "G3":
-        this.positionX = 453;
-        this.positionY = 194;
-        break;
-      case "G4":
-        this.positionX = 453;
-        this.positionY = 282;
-        break;
-      case "G5":
-        this.positionX = 453;
-        this.positionY = 370;
-        break;
-      case "H1":
-        this.positionX = 527;
-        this.positionY = 18;
-        break;
-      case "H2":
-        this.positionX = 527;
-        this.positionY = 106;
-        break;
-      case "H3":
-        this.positionX = 527;
-        this.positionY = 194;
-        break;
-      case "H4":
-        this.positionX = 527;
-        this.positionY = 282;
-        break;
-      case "H5":
-        this.positionX = 527;
-        this.positionY = 370;
-        break;
-      case "I1":
-        this.positionX = 601;
-        this.positionY = 18;
-        break;
-      case "I2":
-        this.positionX = 601;
-        this.positionY = 106;
-        break;
-      case "I3":
-        this.positionX = 601;
-        this.positionY = 194;
-        break;
-      case "I4":
-        this.positionX = 601;
-        this.positionY = 282;
-        break;
-      case "I5":
-        this.positionX = 601;
-        this.positionY = 370;
-        break;
 
+  defineArcherPosition(cellName) {
+    switch (cellName[0]) {
+      case "A":
+        this.positionX = 1;
+        break;
+      case "B":
+        this.positionX = 74;
+        break;
+      case "C":
+        this.positionX = 148;
+        break;
+      case "D":
+        this.positionX = 222;
+        break;
+      case "E":
+        this.positionX = 296;
+        break;
+      case "F":
+        this.positionX = 370;
+        break;
+      case "G":
+        this.positionX = 444;
+        break;
+      case "H":
+        this.positionX = 518;
+        break;
+      case "I":
+        this.positionX = 592;
+        break;
       default:
-        console.log(`Je ne sais pas où aller ${game.cellname}`);
+        break;
+    }
+    switch (cellName[1]) {
+      case "1":
+        this.positionY = 0;
+        break;
+      case "2":
+        this.positionY = 88;
+        break;
+      case "3":
+        this.positionY = 176;
+        break;
+      case "4":
+        this.positionY = 264;
+        break;
+      case "5":
+        this.positionY = 352;
+        break;
+      default:
         break;
     }
   }
 
-  callSpaceMarine() {
+  callArcher() {
     // Create a DOM element
     this.domElement = document.createElement("div");
 
     // Set the id
-    this.domElement.id = "marine";
+    this.domElement.id = "archer";
     this.domElement.style.width = this.width + "px";
     this.domElement.style.height = this.height + "px";
     this.domElement.style.left = this.positionX + "px";
