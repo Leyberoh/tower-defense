@@ -17,7 +17,7 @@ class Game {
     setInterval(() => {
       const newEnemy = new Enemy();
       this.enemyArr.push(newEnemy);
-    }, 2 * 1000);
+    }, 10000 * 1000);
 
     setInterval(() => {
       this.enemyArr.forEach((enemyInstance) => {
@@ -120,7 +120,7 @@ class Archer {
     this.domElement = document.createElement("div");
 
     // Set the id
-    this.domElement.id = "archer";
+    this.domElement.className = "archer";
     this.domElement.style.width = this.width + "px";
     this.domElement.style.height = this.height + "px";
     this.domElement.style.left = this.positionX + "px";
@@ -160,7 +160,7 @@ class Enemy {
   callEnemy() {
     this.domElement = document.createElement("div");
 
-    this.domElement.id = "enemy";
+    this.domElement.className = "enemy";
     this.domElement.style.width = this.width + "px";
     this.domElement.style.height = this.height + "px";
     this.domElement.style.right = this.positionX + "px";
