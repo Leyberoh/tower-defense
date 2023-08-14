@@ -6,6 +6,7 @@ class Game {
     this.boardHeigth = 0;
     this.gameZoneWidth = 662;
     this.gameZomeHeigth = 441;
+    this.start();
   }
 
   start() {
@@ -17,10 +18,12 @@ class Game {
     setInterval(() => {
       const newEnemy = new Enemy();
       this.enemyArr.push(newEnemy);
-    }, 10000 * 1000);
+    }, 5 * 1000);
 
     setInterval(() => {
       this.enemyArr.forEach((enemyInstance) => {
+        this.checkLinesOfSigth(enemyInstance);
+
         enemyInstance.moveEnemy();
       });
     }, 100);
@@ -32,7 +35,6 @@ class Game {
     clickZone.addEventListener("click", function (click) {
       const clickPositionX = click.offsetX;
       const clickPositionY = click.offsetY;
-      click.stopPropagation();
 
       const column = Math.floor(clickPositionX / (game.gameZoneWidth / 9));
       const row = Math.floor(clickPositionY / (game.gameZomeHeigth / 5));
@@ -42,19 +44,27 @@ class Game {
 
       const cellName = columnName + rowNumber;
 
-      const newArcher = new Archer(clickPositionX, clickPositionY, cellName);
+      const newArcher = new Archer(cellName);
       game.archerArr.push(newArcher);
+    });
+  }
 
-      console.log(game.archerArr);
-      console.log("Position X : ", clickPositionX);
-      console.log("Position Y : ", clickPositionY);
-      console.log("Cell : ", cellName);
+  checkLinesOfSigth(enemy) {
+    this.archerArr.forEach((archer) => {
+      if (
+        archer.positionY === enemy.positionY &&
+        archer.positionX > enemy.positionX
+      ) {
+        archer.takeAim();
+      } else if (archer.positionY !== enemy.positionY) {
+        archer.atEase();
+      }
     });
   }
 }
 
 class Archer {
-  constructor(clickPositionX, clickPositionY, cellName) {
+  constructor(cellName) {
     this.width = 70;
     this.height = 73;
     this.domElement = null;
@@ -130,6 +140,23 @@ class Archer {
     const parentElm = document.getElementById("game-zone");
     parentElm.appendChild(this.domElement);
   }
+
+  killArcher() {
+    this.domElement.className = "archer-dead";
+    setTimeout(() => {
+      this.domElement.remove();
+    }, 900);
+  }
+
+  takeAim() {
+    this.domElement.className = "archer-shooting";
+    console.log("je tire");
+  }
+
+  atEase() {
+    this.domElement.className = "archer";
+    console.log("je branle");
+  }
 }
 
 class Enemy {
@@ -137,6 +164,8 @@ class Enemy {
     this.width = 70;
     this.height = 73;
     this.domElement = null;
+    this.runSpeed = 3;
+    this.attackDuration = 1300;
     this.defineEnemyPosition();
     this.callEnemy();
   }
@@ -171,14 +200,55 @@ class Enemy {
   }
 
   moveEnemy() {
-    this.positionX += 2;
-    this.domElement.style.right = this.positionX + "px";
+    if (!this.attacking) {
+      this.positionX += this.runSpeed;
+      this.domElement.style.right = this.positionX + "px";
 
-    if (this.positionX >= 662) {
-      location.href = "./game-over.html";
+      // Check if there is a collision between the Enemy and any Archer
+      game.archerArr.forEach((archer) => {
+        const rectEnemy = this.domElement.getBoundingClientRect();
+        const rectArcher = archer.domElement.getBoundingClientRect();
+
+        if (
+          rectEnemy.left < rectArcher.right &&
+          rectEnemy.right > rectArcher.left &&
+          rectEnemy.top < rectArcher.bottom &&
+          rectEnemy.bottom > rectArcher.top
+        ) {
+          this.positionX += 20;
+
+          setTimeout(() => {
+            this.startAttack(archer);
+          }, 200);
+        }
+      });
+
+      if (this.positionX >= 662) {
+        location.href = "./game-over.html";
+      }
+    } else {
+      // If an enemy is already attacking, delay it's movement
+      const currentTime = new Date().getTime();
+      if (currentTime - this.attackStartTime >= this.attackDuration) {
+        this.stopAttack(this.attackedArcher);
+      }
     }
+  }
+
+  startAttack(archer) {
+    this.attacking = true;
+    this.attackedArcher = archer;
+    this.attackStartTime = new Date().getTime();
+    this.domElement.className = "enemy-attack";
+  }
+
+  stopAttack(archer) {
+    this.attacking = false;
+    this.attackStartTime = null;
+    this.domElement.className = "enemy";
+    archer.killArcher();
+    game.archerArr = game.archerArr.filter((a) => a !== archer);
   }
 }
 
 const game = new Game();
-game.start();

@@ -41,8 +41,34 @@ h1 {
     position: absolute;
 }
 
+.archer-dead {
+    
+    background-image: url('/images/Archer-Dead.gif');
+    background-size: cover;
+    position: absolute;
+}
+
+.archer-shooting {
+    
+    background-image: url('/images/Archer-Attack.gif');
+    background-size: cover;
+    position: absolute;
+}
+
 .enemy {
     background-image: url('/images/Enemy-Run.gif');
+    background-size: cover;
+    position: absolute;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.enemy-attack {
+    background-image: url('/images/Enemy-Attack.gif');
     background-size: cover;
     position: absolute;
     -moz-transform: scaleX(-1);
