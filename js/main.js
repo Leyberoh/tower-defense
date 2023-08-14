@@ -1,6 +1,7 @@
 class Game {
   constructor() {
     this.archerArr = [];
+    this.enemyArr = [];
     this.boardWidth = 0;
     this.boardHeigth = 0;
     this.gameZoneWidth = 662;
@@ -9,7 +10,22 @@ class Game {
 
   start() {
     this.getArcherPosition();
+    this.releaseTheHorde();
   }
+
+  releaseTheHorde() {
+    setInterval(() => {
+      const newEnemy = new Enemy();
+      this.enemyArr.push(newEnemy);
+    }, 2 * 1000);
+
+    setInterval(() => {
+      this.enemyArr.forEach((enemyInstance) => {
+        enemyInstance.moveEnemy();
+      });
+    }, 100);
+  }
+
   getArcherPosition() {
     const clickZone = document.getElementById("game-zone");
 
@@ -113,6 +129,54 @@ class Archer {
     // Append to the DOM
     const parentElm = document.getElementById("game-zone");
     parentElm.appendChild(this.domElement);
+  }
+}
+
+class Enemy {
+  constructor() {
+    this.width = 70;
+    this.height = 73;
+    this.domElement = null;
+    this.defineEnemyPosition();
+    this.callEnemy();
+  }
+
+  defineEnemyPosition() {
+    this.positionX = -200;
+    this.startingPosition = Math.random() * 5;
+    if (this.startingPosition < 1) {
+      this.positionY = 0;
+    } else if (this.startingPosition < 2) {
+      this.positionY = 88;
+    } else if (this.startingPosition < 3) {
+      this.positionY = 176;
+    } else if (this.startingPosition < 4) {
+      this.positionY = 264;
+    } else {
+      this.positionY = 352;
+    }
+  }
+
+  callEnemy() {
+    this.domElement = document.createElement("div");
+
+    this.domElement.id = "enemy";
+    this.domElement.style.width = this.width + "px";
+    this.domElement.style.height = this.height + "px";
+    this.domElement.style.right = this.positionX + "px";
+    this.domElement.style.top = this.positionY + "px";
+
+    const parentElm = document.getElementById("game-zone");
+    parentElm.appendChild(this.domElement);
+  }
+
+  moveEnemy() {
+    this.positionX += 2;
+    this.domElement.style.right = this.positionX + "px";
+
+    if (this.positionX >= 662) {
+      location.href = "./game-over.html";
+    }
   }
 }
 
