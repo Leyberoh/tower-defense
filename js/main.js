@@ -21,11 +21,13 @@ class Game {
     }, 5 * 1000);
 
     setInterval(() => {
+      //move all enemies
       this.enemyArr.forEach((enemyInstance) => {
-        this.checkLinesOfSigth(enemyInstance);
-
         enemyInstance.moveEnemy();
       });
+
+      // set archers state (shooting or not)
+      this.setArchersState();
     }, 100);
   }
 
@@ -49,14 +51,18 @@ class Game {
     });
   }
 
-  checkLinesOfSigth(enemy) {
+  setArchersState() {
     this.archerArr.forEach((archer) => {
-      if (
-        archer.positionY === enemy.positionY &&
-        archer.positionX > enemy.positionX
-      ) {
+      let eligibleTarget = this.enemyArr.filter((enemy) => {
+        return (
+          archer.positionY === enemy.positionY /*&&
+          archer.positionX > enemy.positionX*/
+        );
+      });
+
+      if (eligibleTarget.length > 0) {
         archer.takeAim();
-      } else if (archer.positionY !== enemy.positionY) {
+      } else {
         archer.atEase();
       }
     });
