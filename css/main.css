@@ -30,6 +30,32 @@ body {
     box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
+#board-gameover {
+    background-image: url('/images/map-gameover.jpg');
+    height: 700px;
+    width: 1067px;
+    min-height: 700px;
+    min-width: 1067px;
+    text-align: center;
+    background-size : cover;
+    display: flexbox;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 5px rgb(70, 61, 98) solid;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+#board-gameover p, a {
+    color: white;
+    font-family: 'CaslonAntique';
+    margin-top: 280px;
+    font-size : 25px;
+}
+
 h1 {
     font-family: 'CaslonAntique';
 }
@@ -101,6 +127,27 @@ h1 {
     transform: scaleX(-1);
     filter: FlipH;
     -ms-filter: "FlipH";
+}
+
+#ui {
+    position: absolute;
+    top : 15px;
+    left : 30px;
+}
+
+#ui p {
+    font-family: 'CaslonAntique';
+    color : white;
+    font-size: large;
+    text-shadow: 1px 1px 4px black;
+}
+
+#line2 {
+    margin-top: -15px;
+}
+
+#line3 {
+    margin-top: -15px;
 }
 
 #game-zone {

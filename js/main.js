@@ -7,33 +7,57 @@ class Game {
     this.boardHeigth = 0;
     this.gameZoneWidth = 662;
     this.gameZomeHeigth = 441;
+    this.reinforcementsTimer = 10;
+    this.archersAvailable = 1;
+    this.score = 0;
     this.start();
   }
 
   start() {
+    this.updateUI();
+    this.launchScoring();
     this.getArcherPosition();
-    this.releaseTheHorde();
+    this.initEasyRush();
+    this.initMediumRush();
+    this.initHardRush();
+    this.initEndRush();
+    this.startReinforcementsTimer();
   }
 
-  releaseTheHorde() {
-    setInterval(() => {
+  updateUI() {
+    const timerElement = document.getElementById("timer");
+    timerElement.textContent = this.reinforcementsTimer;
+
+    const archerCounterElement = document.getElementById("archer-counter");
+    archerCounterElement.textContent = this.archersAvailable;
+
+    const scoreCounterElement = document.getElementById("score-counter");
+    scoreCounterElement.textContent = this.score;
+  }
+
+  startReinforcementsTimer() {
+    const timerInterval = setInterval(() => {
+      this.reinforcementsTimer--;
+
+      if (this.reinforcementsTimer <= 0) {
+        this.reinforcementsTimer = 10; // Reset chrono
+        this.archersAvailable += 1; // Get one archer
+        this.updateUI();
+      }
+
+      this.updateUI();
+    }, 1000);
+  }
+
+  initEasyRush() {
+    const easyRush = setInterval(() => {
       const newEnemy = new Enemy();
       this.enemyArr.push(newEnemy);
-    }, 3 * 1000);
-
-    /*setTimeout(() => {
-      setInterval(() => {
-        const newEnemy = new Enemy();
-        this.enemyArr.push(newEnemy);
-      }, 4 * 1000);
-    }, 10 * 1000);
+    }, 4 * 1000);
 
     setTimeout(() => {
-      setInterval(() => {
-        const newEnemy = new Enemy();
-        this.enemyArr.push(newEnemy);
-      }, 2 * 1000);
-    }, 20 * 1000);*/
+      clearInterval(easyRush);
+    }, 45 * 1000);
 
     setInterval(() => {
       //move all enemies
@@ -44,6 +68,50 @@ class Game {
       // set archers state (shooting or not)
       this.setArchersState();
     }, 100);
+  }
+
+  initMediumRush() {
+    setTimeout(() => {
+      const mediumRush = setInterval(() => {
+        for (const enemy of this.enemyArr) {
+          enemy.runSpeed = 6;
+        }
+        const newEnemy = new Enemy();
+        this.enemyArr.push(newEnemy);
+      }, 1.5 * 1000);
+    }, 45 * 1000);
+
+    setTimeout(() => {
+      clearInterval(mediumRush);
+    }, 90 * 1000);
+  }
+
+  initHardRush() {
+    setTimeout(() => {
+      const hardRush = setInterval(() => {
+        for (const enemy of this.enemyArr) {
+          enemy.runSpeed = 9;
+        }
+        const newEnemy = new Enemy();
+        this.enemyArr.push(newEnemy);
+      }, 1 * 1000);
+    }, 90 * 1000);
+
+    setTimeout(() => {
+      clearInterval(hardRush);
+    }, 135 * 1000);
+  }
+
+  initEndRush() {
+    setTimeout(() => {
+      const endRush = setInterval(() => {
+        for (const enemy of this.enemyArr) {
+          enemy.runSpeed = 11;
+        }
+        const newEnemy = new Enemy();
+        this.enemyArr.push(newEnemy);
+      }, 0.85 * 1000);
+    }, 90 * 1000);
   }
 
   getArcherPosition() {
@@ -61,8 +129,11 @@ class Game {
 
       const cellName = columnName + rowNumber;
 
-      const newArcher = new Archer(cellName);
-      game.archerArr.push(newArcher);
+      if (game.archersAvailable > 0) {
+        game.archersAvailable--;
+        const newArcher = new Archer(cellName);
+        game.archerArr.push(newArcher);
+      }
     });
   }
 
@@ -71,7 +142,8 @@ class Game {
       const eligibleTargets = this.enemyArr.filter((enemy) => {
         return (
           archer.positionY === enemy.positionY &&
-          archer.positionX < enemy.positionX
+          archer.positionX < enemy.positionX &&
+          enemy.positionX <= game.gameZoneWidth
         );
       });
 
@@ -81,6 +153,18 @@ class Game {
         archer.atEase();
       }
     });
+  }
+
+  launchScoring() {
+    setInterval(() => {
+      this.score += 10;
+      this.updateUI();
+    }, 100);
+  }
+
+  callForScore() {
+    this.finalScore = this.score;
+    localStorage.setItem("finalScore", this.finalScore); // I've found this online, no idea of how it works to be honest...
   }
 }
 
@@ -194,7 +278,7 @@ class Enemy {
     this.height = 73;
     this.domElement = null;
     this.runSpeed = 3;
-    this.health = 50;
+    this.health = 60;
     this.attackDuration = 1300;
     this.defineEnemyPosition();
     this.callEnemy();
@@ -255,6 +339,7 @@ class Enemy {
 
       if (this.positionX <= 0 - this.width) {
         location.href = "./game-over.html";
+        game.callForScore();
       }
     } else {
       // If an enemy is already attacking, delay it's movement
@@ -346,7 +431,7 @@ class Arrow {
           game.arrowsArr = game.arrowsArr.filter((arrow) => arrow !== this);
         }
       }
-    }, 2);
+    }, 7);
   }
   hit(hitEnemy) {
     hitEnemy.health -= this.power;

@@ -3,11 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Against The Horde</title>
+    <link rel="stylesheet" href="./css/main.css">
     <link rel="icon" type="image/png" href="./images/target.png" />
-    <title>Game Over</title>
 </head>
 <body>
-    <h1>Game Over</h1>
-    <a href="./index.html">Play again</a>
+
+    <h1>THE CITADEL HATH CRUMBLED, A TESTAMENT TO THINE UNWAVERING VALOR IN BATTLE !</h1>
+
+    <section id="board-gameover"><p>SCORE : <span id="final-score">x</span></p><a href="./index.html">EMBARK UPON THY QUEST ANEW</a></section>
+
+    <script src="./js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const displayScore = document.getElementById("final-score");
+          const finalScore = localStorage.getItem("finalScore");
+          if (finalScore) {
+            displayScore.textContent = finalScore;
+          }
+        });
+      </script>
+
 </body>
 </html>
