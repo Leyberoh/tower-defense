@@ -2,6 +2,7 @@ class Game {
   constructor() {
     this.archerArr = [];
     this.enemyArr = [];
+    this.arrowsArr = [];
     this.boardWidth = 0;
     this.boardHeigth = 0;
     this.gameZoneWidth = 662;
@@ -18,7 +19,21 @@ class Game {
     setInterval(() => {
       const newEnemy = new Enemy();
       this.enemyArr.push(newEnemy);
-    }, 5 * 1000);
+    }, 3 * 1000);
+
+    /*setTimeout(() => {
+      setInterval(() => {
+        const newEnemy = new Enemy();
+        this.enemyArr.push(newEnemy);
+      }, 4 * 1000);
+    }, 10 * 1000);
+
+    setTimeout(() => {
+      setInterval(() => {
+        const newEnemy = new Enemy();
+        this.enemyArr.push(newEnemy);
+      }, 2 * 1000);
+    }, 20 * 1000);*/
 
     setInterval(() => {
       //move all enemies
@@ -53,14 +68,14 @@ class Game {
 
   setArchersState() {
     this.archerArr.forEach((archer) => {
-      let eligibleTarget = this.enemyArr.filter((enemy) => {
+      const eligibleTargets = this.enemyArr.filter((enemy) => {
         return (
-          archer.positionY === enemy.positionY /*&&
-          archer.positionX > enemy.positionX*/
+          archer.positionY === enemy.positionY &&
+          archer.positionX < enemy.positionX
         );
       });
 
-      if (eligibleTarget.length > 0) {
+      if (eligibleTargets.length > 0) {
         archer.takeAim();
       } else {
         archer.atEase();
@@ -76,6 +91,7 @@ class Archer {
     this.domElement = null;
     this.defineArcherPosition(cellName);
     this.callArcher();
+    this.shooting();
   }
 
   defineArcherPosition(cellName) {
@@ -156,12 +172,19 @@ class Archer {
 
   takeAim() {
     this.domElement.className = "archer-shooting";
-    console.log("je tire");
+  }
+
+  shooting() {
+    setInterval(() => {
+      if (this.domElement.className === "archer-shooting") {
+        const newArrow = new Arrow(this.positionX, this.positionY, this.width);
+        game.arrowsArr.push(newArrow);
+      }
+    }, 900);
   }
 
   atEase() {
     this.domElement.className = "archer";
-    console.log("je branle");
   }
 }
 
@@ -171,13 +194,14 @@ class Enemy {
     this.height = 73;
     this.domElement = null;
     this.runSpeed = 3;
+    this.health = 50;
     this.attackDuration = 1300;
     this.defineEnemyPosition();
     this.callEnemy();
   }
 
   defineEnemyPosition() {
-    this.positionX = -200;
+    this.positionX = 800;
     this.startingPosition = Math.random() * 5;
     if (this.startingPosition < 1) {
       this.positionY = 0;
@@ -198,7 +222,7 @@ class Enemy {
     this.domElement.className = "enemy";
     this.domElement.style.width = this.width + "px";
     this.domElement.style.height = this.height + "px";
-    this.domElement.style.right = this.positionX + "px";
+    this.domElement.style.left = this.positionX + "px";
     this.domElement.style.top = this.positionY + "px";
 
     const parentElm = document.getElementById("game-zone");
@@ -207,8 +231,8 @@ class Enemy {
 
   moveEnemy() {
     if (!this.attacking) {
-      this.positionX += this.runSpeed;
-      this.domElement.style.right = this.positionX + "px";
+      this.positionX -= this.runSpeed;
+      this.domElement.style.left = this.positionX + "px";
 
       // Check if there is a collision between the Enemy and any Archer
       game.archerArr.forEach((archer) => {
@@ -221,7 +245,7 @@ class Enemy {
           rectEnemy.top < rectArcher.bottom &&
           rectEnemy.bottom > rectArcher.top
         ) {
-          this.positionX += 20;
+          this.positionX -= 20;
 
           setTimeout(() => {
             this.startAttack(archer);
@@ -229,7 +253,7 @@ class Enemy {
         }
       });
 
-      if (this.positionX >= 662) {
+      if (this.positionX <= 0 - this.width) {
         location.href = "./game-over.html";
       }
     } else {
@@ -254,6 +278,87 @@ class Enemy {
     this.domElement.className = "enemy";
     archer.killArcher();
     game.archerArr = game.archerArr.filter((a) => a !== archer);
+  }
+
+  deadEnemy() {
+    this.domElement.className = "enemy-dead";
+    game.enemyArr = game.enemyArr.filter((enemy) => enemy !== this);
+
+    setTimeout(() => {
+      this.domElement.remove();
+    }, 1000);
+  }
+}
+
+class Arrow {
+  constructor(archerX, archerY, archerWidth) {
+    this.power = 10;
+    this.height = 2;
+    this.width = 20;
+    this.speed = 1;
+    this.positionX = archerX + archerWidth;
+    this.positionY = archerY + 33;
+    this.startFlying();
+  }
+  startFlying() {
+    this.domElement = document.createElement("div");
+
+    this.domElement.className = "arrow";
+    this.domElement.style.width = this.width + "px";
+    this.domElement.style.height = this.height + "px";
+
+    this.domElement.style.left = this.positionX + "px";
+    this.domElement.style.top = this.positionY + "px";
+
+    const parentElm = document.getElementById("game-zone");
+    parentElm.appendChild(this.domElement);
+    this.fly();
+    this.hit();
+  }
+  fly() {
+    const flyInterval = setInterval(() => {
+      this.positionX += this.speed;
+      this.domElement.style.left = this.positionX + "px";
+
+      // Remove the arrow if it reaches the end of the board
+      if (this.positionX >= game.gameZoneWidth) {
+        clearInterval(flyInterval);
+        this.domElement.remove();
+        game.arrowsArr = game.arrowsArr.filter((arrow) => arrow !== this);
+      } else {
+        // Verify collision with enemies
+        const hitEnemy = game.enemyArr.find((enemy) => {
+          const enemyRect = enemy.domElement.getBoundingClientRect();
+          const arrowRect = this.domElement.getBoundingClientRect();
+
+          return (
+            arrowRect.left < enemyRect.right &&
+            arrowRect.right > enemyRect.left &&
+            arrowRect.top < enemyRect.bottom &&
+            arrowRect.bottom > enemyRect.top
+          );
+        });
+
+        if (hitEnemy) {
+          this.hit(hitEnemy);
+          clearInterval(flyInterval);
+          this.domElement.remove();
+          game.arrowsArr = game.arrowsArr.filter((arrow) => arrow !== this);
+        }
+      }
+    }, 2);
+  }
+  hit(hitEnemy) {
+    hitEnemy.health -= this.power;
+
+    if (hitEnemy.health <= 0) {
+      hitEnemy.deadEnemy();
+    } else {
+      hitEnemy.domElement.className = "enemy-hurt";
+      setTimeout(() => {
+        hitEnemy.domElement.className = "enemy";
+      }, 250);
+    }
   }
 }
 

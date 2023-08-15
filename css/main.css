@@ -79,10 +79,40 @@ h1 {
     -ms-filter: "FlipH";
 }
 
+.enemy-dead {
+    background-image: url('/images/Enemy-Dead.gif');
+    background-size: cover;
+    position: absolute;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.enemy-hurt {
+    background-image: url('/images/Enemy-Hurt.gif');
+    background-size: cover;
+    position: absolute;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
 #game-zone {
     width: 662px;
     height: 441px;
     top:182px;
     left:198px;
     position:absolute
+}
+
+.arrow {
+    background-color: #caffff;
+    box-shadow: 0px 0px 2px 2px #00ffff7a;
+    position: absolute;
 }
