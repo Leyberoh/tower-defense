@@ -22,6 +22,12 @@ class Game {
     this.initHardRush();
     this.initEndRush();
     this.startReinforcementsTimer();
+    this.startMusic();
+  }
+
+  startMusic() {
+    const backgroundMusic = document.getElementById("background-music");
+    backgroundMusic.volume = 0.1;
   }
 
   updateUI() {
@@ -74,44 +80,42 @@ class Game {
     setTimeout(() => {
       const mediumRush = setInterval(() => {
         for (const enemy of this.enemyArr) {
-          enemy.runSpeed = 6;
+          enemy.runSpeed = 8;
         }
         const newEnemy = new Enemy();
         this.enemyArr.push(newEnemy);
+        setTimeout(() => {
+          clearInterval(mediumRush);
+        }, 45 * 1000);
       }, 1.5 * 1000);
     }, 45 * 1000);
-
-    setTimeout(() => {
-      clearInterval(mediumRush);
-    }, 90 * 1000);
   }
 
   initHardRush() {
     setTimeout(() => {
       const hardRush = setInterval(() => {
         for (const enemy of this.enemyArr) {
-          enemy.runSpeed = 9;
+          enemy.runSpeed = 12;
         }
         const newEnemy = new Enemy();
         this.enemyArr.push(newEnemy);
-      }, 1 * 1000);
+        setTimeout(() => {
+          clearInterval(mediumRush);
+        }, 90 * 1000);
+      }, 0.75 * 1000);
     }, 90 * 1000);
-
-    setTimeout(() => {
-      clearInterval(hardRush);
-    }, 135 * 1000);
   }
 
   initEndRush() {
     setTimeout(() => {
       const endRush = setInterval(() => {
         for (const enemy of this.enemyArr) {
-          enemy.runSpeed = 11;
+          enemy.runSpeed = 20;
         }
         const newEnemy = new Enemy();
         this.enemyArr.push(newEnemy);
-      }, 0.85 * 1000);
-    }, 90 * 1000);
+      }, 0.5 * 1000);
+    }, 135 * 1000);
   }
 
   getArcherPosition() {
@@ -261,6 +265,7 @@ class Archer {
   shooting() {
     setInterval(() => {
       if (this.domElement.className === "archer-shooting") {
+        /*this.playArcherSound();*/
         const newArrow = new Arrow(this.positionX, this.positionY, this.width);
         game.arrowsArr.push(newArrow);
       }
@@ -269,6 +274,12 @@ class Archer {
 
   atEase() {
     this.domElement.className = "archer";
+  }
+
+  playArcherSound() {
+    const archerSound = document.getElementById("bow");
+    archerSound.currentTime = 0;
+    archerSound.play();
   }
 }
 
@@ -398,7 +409,6 @@ class Arrow {
     const parentElm = document.getElementById("game-zone");
     parentElm.appendChild(this.domElement);
     this.fly();
-    this.hit();
   }
   fly() {
     const flyInterval = setInterval(() => {
