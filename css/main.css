@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'CaslonAntique';
-    src: url('/fonts/CaslonAntique.ttf');
+    src: url('../fonts/CaslonAntique.ttf');
   }
 
 body {
@@ -15,7 +15,7 @@ body {
 }
 
 #board {
-    background-image: url('/images/map.jpg');
+    background-image: url('../images/map.jpg');
     background-color: antiquewhite;
     height: 700px;
     width: 1067px;
@@ -31,7 +31,7 @@ body {
 }
 
 #board-gameover {
-    background-image: url('/images/map-gameover.jpg');
+    background-image: url('../images/map-gameover.jpg');
     height: 700px;
     width: 1067px;
     min-height: 700px;
@@ -62,27 +62,27 @@ h1 {
 
 .archer {
     
-    background-image: url('/images/Archer.gif');
+    background-image: url('../images/Archer.gif');
     background-size: cover;
     position: absolute;
 }
 
 .archer-dead {
     
-    background-image: url('/images/Archer-Dead.gif');
+    background-image: url('../images/Archer-Dead.gif');
     background-size: cover;
     position: absolute;
 }
 
 .archer-shooting {
     
-    background-image: url('/images/Archer-Attack.gif');
+    background-image: url('../images/Archer-Attack.gif');
     background-size: cover;
     position: absolute;
 }
 
 .enemy {
-    background-image: url('/images/Enemy-Run.gif');
+    background-image: url('../images/Enemy-Run.gif');
     background-size: cover;
     position: absolute;
     -moz-transform: scaleX(-1);
@@ -94,7 +94,7 @@ h1 {
 }
 
 .enemy-attack {
-    background-image: url('/images/Enemy-Attack.gif');
+    background-image: url('../images/Enemy-Attack.gif');
     background-size: cover;
     position: absolute;
     -moz-transform: scaleX(-1);
@@ -106,7 +106,7 @@ h1 {
 }
 
 .enemy-dead {
-    background-image: url('/images/Enemy-Dead.gif');
+    background-image: url('../images/Enemy-Dead.gif');
     background-size: cover;
     position: absolute;
     -moz-transform: scaleX(-1);
@@ -118,7 +118,7 @@ h1 {
 }
 
 .enemy-hurt {
-    background-image: url('/images/Enemy-Hurt.gif');
+    background-image: url('../images/Enemy-Hurt.gif');
     background-size: cover;
     position: absolute;
     -moz-transform: scaleX(-1);
@@ -143,11 +143,22 @@ h1 {
 }
 
 #line2 {
-    margin-top: -15px;
+    margin-top: -20px;
 }
 
-#line3 {
-    margin-top: -15px;
+#line3  {
+    margin-top: -20px;
+}
+
+
+#line4 {
+    position: absolute;
+    top : 15px;
+    right : 30px;
+    font-family: 'CaslonAntique';
+    color : white;
+    font-size: large;
+    text-shadow: 1px 1px 4px black;
 }
 
 #game-zone {
