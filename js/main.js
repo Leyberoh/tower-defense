@@ -27,6 +27,7 @@ class Game {
 
   startMusic() {
     const backgroundMusic = document.getElementById("background-music");
+    backgroundMusic.play();
     backgroundMusic.volume = 0.1;
   }
 
@@ -253,6 +254,7 @@ class Archer {
 
   killArcher() {
     this.domElement.className = "archer-dead";
+    this.playScream();
     setTimeout(() => {
       this.domElement.remove();
     }, 900);
@@ -265,7 +267,7 @@ class Archer {
   shooting() {
     setInterval(() => {
       if (this.domElement.className === "archer-shooting") {
-        /*this.playArcherSound();*/
+        this.playArcherSound();
         const newArrow = new Arrow(this.positionX, this.positionY, this.width);
         game.arrowsArr.push(newArrow);
       }
@@ -278,8 +280,14 @@ class Archer {
 
   playArcherSound() {
     const archerSound = document.getElementById("bow");
-    archerSound.currentTime = 0;
+    archerSound.volume = 0.1;
     archerSound.play();
+  }
+
+  playScream() {
+    const scream = document.getElementById("scream");
+    scream.volume = 0.2;
+    scream.play();
   }
 }
 
