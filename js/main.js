@@ -22,7 +22,7 @@ class Game {
     this.initHardRush();
     this.initEndRush();
     this.startReinforcementsTimer();
-    this.startMusic();
+    //this.startMusic();
   }
 
   startMusic() {
@@ -139,6 +139,8 @@ class Game {
         const newArcher = new Archer(cellName);
         game.archerArr.push(newArcher);
       }
+
+      game.startMusic();
     });
   }
 
