@@ -96,7 +96,7 @@ body {
   min-width: 1067px;
   text-align: center;
   background-size: cover;
-  display: flexbox;
+  display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
@@ -111,7 +111,6 @@ body {
 a {
   color: white;
   font-family: "CaslonAntique";
-  margin-top: 280px;
   font-size: 25px;
 }
 
