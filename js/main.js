@@ -22,7 +22,6 @@ class Game {
     this.initHardRush();
     this.initEndRush();
     this.startReinforcementsTimer();
-    //this.startMusic();
   }
 
   startMusic() {
@@ -126,21 +125,26 @@ class Game {
       const clickPositionX = click.offsetX;
       const clickPositionY = click.offsetY;
 
-      const column = Math.floor(clickPositionX / (game.gameZoneWidth / 9));
-      const row = Math.floor(clickPositionY / (game.gameZomeHeigth / 5));
+      const column = Math.floor(
+        clickPositionX / (preGame.game.gameZoneWidth / 9)
+      );
+      const row = Math.floor(
+        clickPositionY / (preGame.game.gameZomeHeigth / 5)
+      );
 
       const columnName = String.fromCharCode(65 + column); // Convert column to letter (A, B, C, ...)
       const rowNumber = row + 1; // Add 1 to convert row to number (1, 2, 3, ...)
 
       const cellName = columnName + rowNumber;
 
-      if (game.archersAvailable > 0) {
-        game.archersAvailable--;
+      if (preGame.game.archersAvailable > 0) {
+        preGame.game.archersAvailable--;
         const newArcher = new Archer(cellName);
-        game.archerArr.push(newArcher);
+        preGame.game.archerArr.push(newArcher);
       }
 
-      game.startMusic();
+      preGame.game.startMusic();
+      click.stopPropagation();
     });
   }
 
@@ -150,7 +154,7 @@ class Game {
         return (
           archer.positionY === enemy.positionY &&
           archer.positionX < enemy.positionX &&
-          enemy.positionX <= game.gameZoneWidth
+          enemy.positionX <= preGame.game.gameZoneWidth
         );
       });
 
@@ -271,7 +275,7 @@ class Archer {
       if (this.domElement.className === "archer-shooting") {
         this.playArcherSound();
         const newArrow = new Arrow(this.positionX, this.positionY, this.width);
-        game.arrowsArr.push(newArrow);
+        preGame.game.arrowsArr.push(newArrow);
       }
     }, 900);
   }
@@ -340,7 +344,7 @@ class Enemy {
       this.domElement.style.left = this.positionX + "px";
 
       // Check if there is a collision between the Enemy and any Archer
-      game.archerArr.forEach((archer) => {
+      preGame.game.archerArr.forEach((archer) => {
         const rectEnemy = this.domElement.getBoundingClientRect();
         const rectArcher = archer.domElement.getBoundingClientRect();
 
@@ -360,7 +364,7 @@ class Enemy {
 
       if (this.positionX <= 0 - this.width) {
         location.href = "./game-over.html";
-        game.callForScore();
+        preGame.game.callForScore();
       }
     } else {
       // If an enemy is already attacking, delay it's movement
@@ -383,12 +387,14 @@ class Enemy {
     this.attackStartTime = null;
     this.domElement.className = "enemy";
     archer.killArcher();
-    game.archerArr = game.archerArr.filter((a) => a !== archer);
+    preGame.game.archerArr = preGame.game.archerArr.filter((a) => a !== archer);
   }
 
   deadEnemy() {
     this.domElement.className = "enemy-dead";
-    game.enemyArr = game.enemyArr.filter((enemy) => enemy !== this);
+    preGame.game.enemyArr = preGame.game.enemyArr.filter(
+      (enemy) => enemy !== this
+    );
 
     setTimeout(() => {
       this.domElement.remove();
@@ -426,13 +432,15 @@ class Arrow {
       this.domElement.style.left = this.positionX + "px";
 
       // Remove the arrow if it reaches the end of the board
-      if (this.positionX >= game.gameZoneWidth) {
+      if (this.positionX >= preGame.game.gameZoneWidth) {
         clearInterval(flyInterval);
         this.domElement.remove();
-        game.arrowsArr = game.arrowsArr.filter((arrow) => arrow !== this);
+        preGame.game.arrowsArr = preGame.game.arrowsArr.filter(
+          (arrow) => arrow !== this
+        );
       } else {
         // Verify collision with enemies
-        const hitEnemy = game.enemyArr.find((enemy) => {
+        const hitEnemy = preGame.game.enemyArr.find((enemy) => {
           const enemyRect = enemy.domElement.getBoundingClientRect();
           const arrowRect = this.domElement.getBoundingClientRect();
 
@@ -448,7 +456,9 @@ class Arrow {
           this.hit(hitEnemy);
           clearInterval(flyInterval);
           this.domElement.remove();
-          game.arrowsArr = game.arrowsArr.filter((arrow) => arrow !== this);
+          preGame.game.arrowsArr = preGame.game.arrowsArr.filter(
+            (arrow) => arrow !== this
+          );
         }
       }
     }, 7);
@@ -467,4 +477,25 @@ class Arrow {
   }
 }
 
-const game = new Game();
+class Pregame {
+  constructor() {
+    this.startGameButton = document.getElementById("start");
+
+    this.startGameButton.addEventListener("click", (click) => {
+      this.pregameDiv = document.getElementById("pregame");
+      this.pregameDiv.style.display = "none";
+
+      this.boardPreGame = document.getElementById("board-pregame");
+      this.boardPreGame.id = "board";
+
+      this.uiPreGame = document.getElementById("ui-pregame");
+      this.uiPreGame.id = "ui";
+
+      this.game = new Game();
+
+      click.stopPropagation();
+    });
+  }
+}
+
+const preGame = new Pregame();

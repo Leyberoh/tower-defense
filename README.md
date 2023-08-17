@@ -59,6 +59,10 @@ The waves of enemies increase in number and speed over time. Your score is track
 - Increasing difficulty waves of ennemies added
 - Background music and sound effect added
 
+### Step 8
+
+- Starting screen added
+
 ## III. Acknowledgements
 
 ### Teachers at IronHack
@@ -74,3 +78,4 @@ The waves of enemies increase in number and speed over time. Your score is track
 - [Chierit for the archers sprites](https://chierit.itch.io/)
 - [Hanbaal for the bow sound effect](https://freesound.org/people/Hanbaal/)
 - [Sheb Wooley for the classic Wilhelm's Scream](https://fr.wikipedia.org/wiki/Cri_Wilhelm)
+- Whoever wrote that awesome open source epic music !

@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Against The Horde</title>
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/main.css" />
     <link rel="icon" type="image/png" href="./images/target.png" />
-</head>
-<body>
+  </head>
+  <body>
+    <h1>
+      THEE CITADEL HATH CRUMBLED, A TESTAMENT TO THINE UNWAVERING VALOR IN
+      BATTLE !
+    </h1>
 
-    <h1>THEE CITADEL HATH CRUMBLED, A TESTAMENT TO THINE UNWAVERING VALOR IN BATTLE !</h1>
-
-    <section id="board-gameover"><p>SCORE : <span id="final-score">x</span></p><a href="./index.html">EMBARK UPON THY QUEST ANEW</a></section>
+    <section id="board-gameover">
+      <p>SCORE : <span id="final-score">x</span></p>
+      <a href="./index.html">EMBARK UPON THY QUEST ANEW</a>
+    </section>
 
     <script src="./js/main.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          const displayScore = document.getElementById("final-score");
-          const finalScore = localStorage.getItem("finalScore");
-          if (finalScore) {
-            displayScore.textContent = finalScore;
-          }
-        });
-      </script>
-
-</body>
+      document.addEventListener("DOMContentLoaded", function () {
+        const displayScore = document.getElementById("final-score");
+        const finalScore = localStorage.getItem("finalScore");
+        if (finalScore) {
+          displayScore.textContent = finalScore;
+        }
+      });
+    </script>
+  </body>
 </html>
