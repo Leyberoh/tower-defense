@@ -1,16 +1,21 @@
 # Tower Defense : Against the Horde
 
+<br/> 
+<button name="button" target="_blank" onclick="https://leyberoh.github.io/tower-defense/">TRY THE GAME</button>
+
+<br/> Or [click here](https://leyberoh.github.io/tower-defense/) to do so !
+
 ## I. Project outlining
 
 ### a) Objective
 
 - Create a Javascript game
-- First project during the IronHack Bootcamp
+- First project during the Ironhack Bootcamp
 
 ### b) Constraints
 
 - Solo project
-- The game had to be produced in 4 days
+- The game had to be produced in less than a week
 - Only vanilla Javascript, and no HTML canvas
 
 ### c) The game concept
@@ -20,6 +25,11 @@ The game is heavily inspired by "Plants vs Zombies", an horizontal tower defense
 You get to place Archers on the board by clicking on a cell, it will shoot at incoming enemies on its line. You have to prevent any enemy to reach the left side of the gaming board.
 
 The waves of enemies increase in number and speed over time. Your score is tracked and displayed on the game over page.
+
+![Screenshot of the game](./images/screenhot-game.jpg "Screenshot of the game")
+
+\
+<button name="button" target="_blank" onclick="https://leyberoh.github.io/tower-defense/">DEFEND THE CITADEL</button>
 
 ## II. Milestones
 
