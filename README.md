@@ -1,9 +1,6 @@
 # Tower Defense : Against the Horde
 
-<br/> 
-<button name="button" target="_blank" onclick="https://leyberoh.github.io/tower-defense/">TRY THE GAME</button>
-
-<br/> Or [click here](https://leyberoh.github.io/tower-defense/) to do so !
+[Click here](https://leyberoh.github.io/tower-defense/) to try the game !
 
 ## I. Project outlining
 
@@ -28,8 +25,7 @@ The waves of enemies increase in number and speed over time. Your score is track
 
 ![Screenshot of the game](./images/screenhot-game.jpg "Screenshot of the game")
 
-\
-<button name="button" target="_blank" onclick="https://leyberoh.github.io/tower-defense/">DEFEND THE CITADEL</button>
+[Defend the Citadel !](https://leyberoh.github.io/tower-defense/)
 
 ## II. Milestones
 
